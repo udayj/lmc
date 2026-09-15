@@ -1,0 +1,19 @@
+{
+  "name": "lmc-website",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  },
+  "build": {
+    "command": "npm run build"
+  },
+  "vars": {
+    "APP_BACKEND_ORIGIN": "https://whatsapp.avantgardelabs.in",
+    "PDF_STORAGE_ORIGIN": "https://gkwvskourxwsnzuxlccr.supabase.co"
+  }
+}

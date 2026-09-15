@@ -1,0 +1,37 @@
+.downloads-main { padding: 64px 0 88px; min-height: 65vh; background: #f5f6f7; }
+.downloads-heading { max-width: 740px; margin-bottom: 32px; }
+.downloads-heading h1 { font-family: Manrope, sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1.12; letter-spacing: -.045em; margin: 0 0 20px; }
+.downloads-heading p:last-child { color: #53616a; font-size: 1.05rem; line-height: 1.7; }
+.pricelist-filters { display: grid; grid-template-columns: minmax(0, 2fr) minmax(160px, 1fr); gap: 24px; max-width: 850px; margin-bottom: 24px; }
+.pricelist-filters label { display: grid; gap: 8px; font-weight: 600; font-size: .9rem; }
+.pricelist-filters input, .pricelist-filters select { width: 100%; font: inherit; font-size: 1rem; font-weight: 400; border: 1px solid #bcc4c8; background: #fff; border-radius: 3px; padding: 14px; color: #17262f; min-height: 50px; }
+.pricelist-filters :focus-visible, .download-button:focus-visible { outline: 3px solid #942338; outline-offset: 3px; }
+.pricelist-status { color: #53616a; margin-bottom: 20px; }
+.pricelist-results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.pricelist-card { background: #fff; border: 1px solid #e0e4e7; border-top: 3px solid #942338; padding: 26px; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.pricelist-brand { color: #942338; font-size: .875rem; font-weight: 700; letter-spacing: .06em; }
+.pricelist-card h2 { font-size: 1.2rem; line-height: 1.5; letter-spacing: -.02em; margin: 14px 0 8px; overflow-wrap: anywhere; }
+.pricelist-format { color: #66747c; font-size: .875rem; margin: 0 0 24px; }
+.download-button { margin-top: auto; font: inherit; font-size: .9rem; cursor: pointer; }
+.download-button:disabled { opacity: .65; cursor: wait; }
+.download-feedback { position: sticky; bottom: 16px; background: #17262f; color: #fff; border-radius: 4px; padding: 16px 20px; margin-top: 24px; box-shadow: 0 4px 20px #17262f20; overflow-wrap: anywhere; }
+.download-feedback:empty { display: none; }
+.downloads-contact { margin-top: 36px; color: #53616a; line-height: 1.7; }
+.downloads-contact a { color: #942338; font-weight: 600; }
+@media (max-width: 960px) { .pricelist-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .downloads-main { padding: 36px 0 56px; } .pricelist-filters, .pricelist-results { grid-template-columns: 1fr; gap: 16px; } .pricelist-card { padding: 22px; } }
+
+.downloads-main [hidden] { display: none !important; }
+.downloads-main .button { border: 0; }
+
+.pricelist-search-field { position: relative; min-width: 0; }
+.pricelist-search-field label { margin-bottom: 8px; }
+.pricelist-search-help { font-size: .875rem; color: #53616a; margin: -8px 0 24px; }
+.pricelist-suggestions { position: absolute; z-index: 20; top: 100%; left: 0; right: 0; margin-top: 6px; background: white; border: 1px solid #bcc4c8; border-radius: 4px; box-shadow: 0 12px 28px #17262f24; max-height: 360px; overflow-y: auto; }
+.pricelist-suggestion { padding: 13px 16px; border-bottom: 1px solid #edf0f1; cursor: pointer; }
+.pricelist-suggestion:last-child { border-bottom: 0; }
+.pricelist-suggestion:hover, .pricelist-suggestion[aria-selected="true"] { background: #f8edf0; }
+.suggestion-label { display: block; font-size: .95rem; line-height: 1.5; color: #17262f; overflow-wrap: anywhere; font-weight: 600; }
+.suggestion-detail { display: block; margin-top: 4px; font-size: .875rem; color: #68747b; }
+.downloads-main .show-more { display: flex; margin: 28px auto 0; background: #fff; color: #942338; border: 1px solid #942338; font: inherit; cursor: pointer; }
+.show-more:focus-visible { outline: 3px solid #942338; outline-offset: 3px; }
