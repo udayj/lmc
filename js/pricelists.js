@@ -112,7 +112,6 @@ async function download(item, button) {
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(objectURL), 60_000);
-    feedback.textContent = `${item.title} is ready. Check your browser’s downloads.`;
   } catch {
     feedback.textContent = `Could not download ${item.title}. Please try again or call +91 98300 53838.`;
   } finally {
