@@ -1,3 +1,4 @@
+import { track } from './analytics.js';
 import { matchingPricelists } from './pricelist-search.js';
 const results = document.querySelector('#pricelist-results');
 const status = document.querySelector('#pricelist-status');
@@ -97,6 +98,7 @@ function render() {
 }
 
 async function download(item, button) {
+  track('pricelist_download_requested', { brand: item.brand, pricelist_id: item.id });
   button.disabled = true;
   button.textContent = 'Downloading…';
   feedback.textContent = '';
@@ -111,8 +113,10 @@ async function download(item, button) {
     document.body.append(link);
     link.click();
     link.remove();
+    track('pricelist_download_received', { brand: item.brand, pricelist_id: item.id });
     setTimeout(() => URL.revokeObjectURL(objectURL), 60_000);
   } catch {
+    track('pricelist_download_failed', { brand: item.brand, pricelist_id: item.id });
     feedback.textContent = `Could not download ${item.title}. Please try again or call +91 98300 53838.`;
   } finally {
     button.disabled = false;

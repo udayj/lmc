@@ -1,3 +1,4 @@
+import { createEstimatorAPI, analyticsConfig, reply } from './estimator-api.mjs';
 const DIRECTORY_PATH = '/api/website/pricelists';
 const TTL = 60_000;
 const MAX_PDF_BYTES = 100 * 1024 * 1024;
@@ -16,6 +17,7 @@ function storageURL(value, origin) {
 }
 
 export function createWorker(fetchUpstream = fetch) {
+  const estimator = createEstimatorAPI(fetchUpstream);
   let cached;
   let pending;
   let cacheKey;
@@ -56,6 +58,8 @@ export function createWorker(fetchUpstream = fetch) {
   return {
     async fetch(request, env) {
       const url = new URL(request.url);
+      if (url.pathname.startsWith('/api/estimator/')) return estimator(request, env);
+      if (url.pathname === '/api/analytics/config') return request.method === 'GET' ? reply({ posthog: analyticsConfig(env) }) : reply({ error: 'Method not allowed' }, 405);
       if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
       const match = url.pathname.match(/^\/api\/pricelists\/([a-f0-9]{64})\/download$/);
       if (url.pathname !== '/api/pricelists' && !match) return json({ error: 'Not found' }, 404);

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price Estimator | LMC Cables</title>
+  <meta name="description" content="Estimate cable prices with quantities, discounts and GST using available LMC pricelists.">
+  <meta name="theme-color" content="#942338">
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/website.css">
+  <script src="js/website.js" defer></script>
+<link rel="stylesheet" href="css/estimator.css">
+<script type="module" src="js/estimator.js"></script>
+</head>
+<body id="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="utility"><div class="container utility-inner"><span>Serving the nation since 1958</span><div class="utility-phones"><a href="tel:+919830906922">+91 98309 06922</a><a href="tel:+919830053838">+91 98300 53838</a></div></div></div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html#home" aria-label="Lloyds Mercantile Corporation — Home"><img src="img/logo-scaled.png" width="425" height="58" alt="Lloyds Mercantile Corporation"></a>
+      <button class="menu-toggle" type="button" aria-controls="main-nav" aria-expanded="false" hidden><span>Menu</span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.6"/></svg></button>
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation"><a href="index.html#home">Home</a><a href="index.html#about">About</a><a href="index.html#clientele">Clientele</a><a href="index.html#feature-work">Products</a><a href="pricelists.html">Pricelists</a><a href="estimator.html">Estimator</a><a href="index.html#contact-us">Contact</a></nav>
+    </div>
+  </header>
+<main id="main" class="estimator-main"><div class="container estimator-container">
+  <div class="estimator-heading"><div><p class="eyebrow">LMC / Tools</p><h1>Price estimator<span class="accent">.</span></h1><p>Select products, quantities, discounts and estimate package cost</p></div><a class="est-download-link" href="pricelists.html">Download pricelists ↗</a></div>
+  <p id="estimator-status" role="status">Loading estimator…</p><button id="estimator-retry" class="button button-primary" hidden>Try again</button>
+  <section id="login-panel" class="est-panel login-panel" hidden aria-labelledby="login-title">
+    <h2 id="login-title">Open the price estimator</h2><p>Get a one-time code by <span id="otp-channel">SMS</span>. No password or account setup needed.</p>
+    <form id="phone-form"><label for="phone">Mobile number</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="30" placeholder="+91" required><button id="send-code" class="button button-primary" type="submit">Send code</button></form>
+    <form id="code-form" hidden><p id="code-destination"></p><label for="code">Verification code</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{4,10}" minlength="4" maxlength="10" required><button id="verify-code" class="button button-primary" type="submit">Verify and open estimator</button><div class="otp-actions"><button id="resend-code" class="text-button" type="button">Resend code</button><button id="change-phone" class="text-button" type="button">Change number</button></div></form>
+    <p id="login-error" role="alert" class="est-error"></p><p class="est-note">Stay signed in on this browser for 30 days. Your number is stored by LMC for this access.</p>
+  </section>
+  <div id="tool" hidden>
+    <form id="name-form" class="est-panel name-form" hidden><label for="contact-name">Your name <span class="est-note">(optional)</span><input id="contact-name" autocomplete="name" maxlength="100"></label><button id="save-name" type="submit" class="button button-primary">Save name</button><button id="skip-name" type="button" class="text-button">Skip</button><p id="name-error" role="alert"></p></form>
+    <div class="est-toolbar"><button id="sign-out" class="text-button" hidden>Sign out</button></div>
+    <div class="est-layout"><section class="est-catalog est-panel" aria-labelledby="catalog-title"><div class="est-section-heading"><h2 id="catalog-title">Choose your products</h2></div>
+      <div class="est-selectors"><label for="brand">Brand<select id="brand" disabled></select></label><label for="category">Category<select id="category" disabled></select></label><label for="pricelist" class="est-list-selector">Pricelist<select id="pricelist" disabled></select></label></div>
+      <p id="grid-status" role="status" class="est-note"></p><button id="grid-retry" class="button" hidden>Retry prices</button><div id="grid" aria-busy="false"></div>
+    </section>
+    <section id="your-estimate" class="estimate-panel est-panel" aria-labelledby="estimate-title"><div class="est-section-heading"><div><h2 id="estimate-title">Your estimate</h2><span id="item-count" class="est-note">0 items</span></div><button id="clear-estimate" class="text-button" disabled>Clear all</button></div>
+      <label for="default-discount" class="default-discount">Default discount %<input id="default-discount" type="number" min="0" max="100" step="any" value="0" inputmode="decimal" required><small>Applies unless changed per item.</small></label>
+      <p id="empty-estimate" class="empty-estimate">Select prices from the grid to build your estimate.</p><div id="estimate-items"></div>
+      <p id="estimate-input-error" class="est-error" role="alert" hidden>Enter valid quantities and discounts from 0 to 100%.</p>
+      <dl class="estimate-totals" aria-live="polite"><div><dt>Subtotal</dt><dd id="subtotal">₹0.00</dd></div><div><dt>GST (18%)</dt><dd id="gst">₹0.00</dd></div><div class="grand-total"><dt>Estimated total</dt><dd id="total">₹0.00</dd></div></dl>
+      <p class="est-note">Indicative estimate. Confirm prices and availability with LMC.</p><div class="estimate-actions"><button id="print-estimate" class="est-print" type="button" disabled>Print estimate</button><a class="est-contact" href="https://wa.me/919830053838" target="_blank" rel="noopener noreferrer">Talk to LMC on WhatsApp ↗</a></div>
+    </section></div>
+  </div><noscript><p>Please enable JavaScript to use the estimator.</p></noscript>
+</div></main>
+  <footer class="footer"><div class="container"><div class="footer-grid"><div><img class="footer-logo" src="img/logo-scaled.png" width="425" height="58" alt="Lloyds Mercantile Corporation" loading="lazy"><h3>Product Recap</h3><p>Electric wires, aluminium cables, copper cables, HT Cables, rubber, instrumentation</p><p>Modular switches, MCB, DB, MCCB, MLCB, PVC Conduits</p></div><div><h3>Office</h3><address>51 Ezra Street, 2nd Floor<br><a href="tel:+913322352219">+91 (033) 2235-2219</a><br><a href="tel:+919830906922">+91 98309 06922</a><br><a href="tel:+919830053838">+91 98300 53838</a><br><a href="mailto:SALES@LMCCABLES.COM">SALES@LMCCABLES.COM</a></address></div><div><h3>Warehouse</h3><address>P-143 Remount Rd., Kantapukur Kolkata 700027</address></div></div><div class="footer-bottom"><p>© 2026 Lloyds Mercantile Corporation. All rights reserved.<span class="footer-credit">Made by <a href="https://avantgardelabs.in/" target="_blank" rel="noopener noreferrer">Avant Garde Labs</a></span></p><nav aria-label="Footer navigation"><a href="index.html#home">Home</a><a href="index.html#about">About</a><a href="index.html#clientele">Clientele</a><a href="index.html#feature-work">Products</a><a href="pricelists.html">Pricelists</a><a href="estimator.html">Estimator</a><a href="index.html#contact-us">Contact</a></nav></div></div></footer>
+<a id="mobile-estimate-link" class="mobile-estimate-link" href="#your-estimate" hidden><span>View estimate</span><strong id="mobile-estimate-summary"></strong></a>
+<section id="print-estimate-sheet" aria-label="Printable estimate"></section>
+</body>
+</html>

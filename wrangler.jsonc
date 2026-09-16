@@ -12,8 +12,5 @@
   "build": {
     "command": "npm run build"
   },
-  "vars": {
-    "APP_BACKEND_ORIGIN": "https://whatsapp.avantgardelabs.in",
-    "PDF_STORAGE_ORIGIN": "https://gkwvskourxwsnzuxlccr.supabase.co"
-  }
+  "keep_vars": true
 }
