@@ -16,6 +16,23 @@ function storageURL(value, origin) {
   return url;
 }
 
+const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+// Pricelists carry no date field, so read it from a "14.8.26" keyword (more reliable than titles,
+// which contain typos), then "14th Aug 2026" / "march 2026" in keywords, then the title. Undated sorts last.
+export function pricelistDate(title, keywords) {
+  for (const keyword of keywords) {
+    const m = keyword.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4}|\d{2})\b/);
+    if (m) return Date.UTC(m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]), m[2] - 1, m[1]);
+  }
+  for (const text of [...keywords, title]) {
+    const m = text.match(/(?:\b(\d{1,2})(?:st|nd|rd|th)?\s+)?\b([a-z]{3})[a-z]*\.?\s+(\d{4})\b/i);
+    const month = m ? MONTHS.indexOf(m[2].toLowerCase()) : -1;
+    if (month >= 0) return Date.UTC(Number(m[3]), month, Number(m[1] || 1));
+  }
+  return 0;
+}
+
 export function createWorker(fetchUpstream = fetch) {
   const estimator = createEstimatorAPI(fetchUpstream);
   let cached;
@@ -46,9 +63,10 @@ export function createWorker(fetchUpstream = fetch) {
         const sourceName = decodeURIComponent(url.pathname.split('/').pop());
         const title = sourceName.replace(/\.pdf$/i, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim() || `${entry.brand} pricelist`;
         const filename = `${title.replace(/[^a-zA-Z0-9 .()-]/g, '-').slice(0, 160)}.pdf`;
-        unique.set(id, { id, brand: entry.brand, title, keywords: entry.keywords, filename, latest: entry.keywords.some(keyword => /^(latest|current)\b/i.test(keyword)), url: url.href });
+        unique.set(id, { id, brand: entry.brand, title, keywords: entry.keywords, filename, latest: entry.keywords.some(keyword => /^(latest|current)\b/i.test(keyword)), date: pricelistDate(title, entry.keywords), url: url.href });
       }
-      const items = [...unique.values()].sort((a, b) => Number(b.latest) - Number(a.latest) || a.brand.localeCompare(b.brand) || a.title.localeCompare(b.title, undefined, { numeric: true }));
+      const items = [...unique.values()].sort((a, b) => b.date - a.date || Number(b.latest) - Number(a.latest) || a.brand.localeCompare(b.brand) || a.title.localeCompare(b.title, undefined, { numeric: true }))
+        .map(({ date: _date, ...item }) => item);
       cached = { items, expires: Date.now() + TTL };
       return items;
     })();

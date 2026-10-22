@@ -72,3 +72,17 @@ test('accepts even a single-character configured token', async () => {
  assert.equal((await worker.fetch(request(),{...env,WEBSITE_DOWNLOAD_TOKEN:'x'})).status,200);
  assert.equal((await worker.fetch(request(),{...env,WEBSITE_DOWNLOAD_TOKEN:'   '})).status,503);
 });
+
+test('directory lists newest pricelists first using keyword or title dates', async () => {
+ const at = (name, keywords) => ({ brand: 'kei', keywords, public_url: 'https://storage.example.com/storage/v1/object/public/pricelists/'+encodeURIComponent(name)+'.pdf' });
+ const worker=createWorker(async()=>directory([
+   at('Flat List Price - 2nd Mar 2025', ['2.3.26 flat']),
+   at('Solar LP -1st Oct 2026', ['latest solar']),
+   at('Undated LP', ['latest wires']),
+   at('Cable List Price - July 2026', ['july armoured']),
+   at('Comm LP - 14th Aug 2026', ['14.8.26 communication']),
+ ]));
+ const {pricelists}=await(await worker.fetch(request(),env)).json();
+ assert.deepEqual(pricelists.map(p=>p.title),['Solar LP -1st Oct 2026','Comm LP - 14th Aug 2026','Cable List Price - July 2026','Flat List Price - 2nd Mar 2025','Undated LP']);
+ assert.equal(pricelists[0].date,undefined);
+});
